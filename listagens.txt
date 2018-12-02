@@ -1,0 +1,28 @@
+    (XML) Listagem 5.1: Elemento Principal do Currículo Lattes
+    (XML) Listagem 5.2: Elemento DADOS-GERAIS do Currículo Lattes
+    (XML) Listagem 5.3: Elemento PRODUCAO-BIBLIOGRAFICA do Currículo Lattes
+    (XML) Listagem 5.4: Elemento PRODUCAO-TECNICA do Currículo Lattes
+    (XML) Listagem 5.5: Elemento OUTRA-PRODUCAO do Currículo Lattes
+    (XML) Listagem 5.6: Elemento DADOS-COMPLEMENTARES do Currículo Lattes
+# (DTD) Listagem 5.7: Mapeamento de Métodos para o Currículo Lattes
+# (DTD) Listagem 5.8: Expressões Regulares Utilizadas no Parser de DTD
+# (DTD) Listagem 5.9: Busca de Elementos
+# (DTD) Listagem 5.10: Busca de Atributos
+# (DTD) Listagem 5.11: Método de Geração de Classes no Objeto DTD
+# (DTD) Listagem 5.12: Método de Impressão de Classe no Objeto Element
+    (XML) Listagem 5.13: Instância do Currículo Lattes - Arquivo XML
+# (GEN) Listagem 5.14: Geração dos Objetos
+# (GEN) Listagem 5.15: Parser de XML Gerado para o Currículo Lattes
+# (GEN) Listagem 5.16: Métodos de Geração de Código no Parser de XML
+
+    (XML) Listagem 6.1: Arquivo XML: Informações Pessoais e Resumos
+# (DTD) Listagem 6.2: Métodos de Geração do Código LATEX: Informações Pessoais e Resumos
+# (GEN) Listagem 6.3: Estrutura do Parser de XML: Informações Pessoais e Resumos
+    (TeX) Listagem 6.4: Código LATEX: Informações Pessoais e Resumos
+    (XML) Listagem 6.5: Arquivo XML: Artigos Publicados
+    (TeX) Listagem 6.6: Código LATEX: Artigos Publicados
+# (DTD) Listagem 6.7: Métodos de Geração do Código LATEX: Alternativas de Formatação
+# (GEN) Listagem 6.8: Estrutura do Parser de XML: Alternativas de Formatação
+# (DTD) Listagem 6.9: Validando o Currículo Lattes
+# (DTD*) Listagem 6.10: ORIGINAL: Validando o Currículo Lattes / ALTERANATIVO: Implementação do parserAcervo
+
