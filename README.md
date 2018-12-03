@@ -2,4 +2,4 @@
 
 Uma Ferramenta para Conversão de Currículos Lattes em Documentos LaTeX.
 
-Ferramenta desenvolvida seguindo os passos descritos no TCC do Marcelo Alves Teixeira, disponível [aqui](https://www.inf.ufrgs.br/~nicolas/pdf/tcc_teixeira.pdf).
+Ferramenta desenvolvida seguindo os passos descritos no TCC do Marcelo Alves Teixeira, disponível [aqui](https://www.inf.ufrgs.br/~nicolas/pdf/tcc_teixeira.pdf) e [aqui (cópia local)](Lattes2LaTeX/tcc_teixeira.pdf).      
