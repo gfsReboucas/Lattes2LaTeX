@@ -1,5 +1,5 @@
 class DTD
-	def initialize(dtd_file)
+	def initialize(d)
 		# Listagem 5.9: Busca de Elementos
 		@elements = Array.new
 		d.scan(RE_ELEMENT) { | m | @elements.push(Element.new(m, d)) }
@@ -178,7 +178,7 @@ if __FILE__ == $0
 	# Listagem 5.8 - FINAL
 
 	dtd_file = "documento.dtd"
-    xml_file = "curriculo.xml"
+	xml_file = "curriculo.xml"
     
 	var = DTD.new(dtd_file)
 end
