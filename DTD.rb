@@ -5,6 +5,8 @@ class DTD
 		d.scan(RE_ELEMENT) { | m | @elements.push(Element.new(m, d)) }
 		# Listagem 5.9 - FINAL
 
+		@map = Hash.new
+
 		# Listagem 5.7: Mapeamento de Métodos para o Currículo Lattes
 		@map['CURRICULO-VITAE'] = <<EOF
 		def parse
@@ -101,17 +103,32 @@ EOF
 		d.puts
 		end
 		d.puts
+		d.puts "if __FILE__ == $0"
+		d.puts "	xml_filename = 'curriculo.xml'"
+		d.puts "#	xml_filename = ARGV[0]"
 		d.puts
-		d.puts "f = Document.new(File.new(ARGV[0]))"
-		d.puts "oLoader = #{className(elements[0].name)}.new(f.elements['#{elements[0].name}'])"
-		d.puts "oLoader.parse"
+		d.puts "	xml_file = REXML::Document.new File.new(xml_filename)"
+		d.puts "	obj_loader = #{className(@elements[0].name)}.new(xml_file.elements['#{@elements[0].name}'])"
+		d.puts "	obj_loader.parse"
+		d.puts "end"
 		d.close
 	end
 	# Listagem 5.11 - FINAL
 end
 
 class Element
-	def initialize
+	attr_reader :name
+	def initialize(m, d)
+		@name = m[0]
+		@elements = Hash.new
+		str = m[1].split(',').map{|x| x.tr("( )","")}
+		last_chr = str.map{|x| x[-1]}
+		last_chr = last_chr.map{ |x| x.tr("QWERTYUIOPASDFGHJKLZXCVBNM","")}
+		str = str.map{|x| x.tr("#?*+","")}
+		str.each_index{ |idx| @elements.store(str[idx], last_chr[idx]) }
+
+		@elements.delete('EMPTY')
+		
 		# Listagem 5.10: Busca de Atributos
 		@attributes = Array.new
 		d.scan(RE_ATTRIBUTE) { | m |
@@ -120,35 +137,36 @@ class Element
 			} if m[0] == @name
 		}
 		# Listagem 5.10 - FINAL
+
 	end
 	
 	# Listagem 5.12: Método de Impressão de Classe no Objeto Element
-	def printClass( d, m )
+	def printClass(d, m)
 		d.puts "class #{className(@name)}"
 		d.puts
-		d.puts "	def initialize( d )"
+		d.puts "	def initialize(arg)"
 		d.puts
-		d.puts "		return if d == nil"
+		d.puts "		return if arg == nil"
 		d.puts
 		d.puts "		@atributos = Hash.new"
 		@attributes.each do | a |
-			d.puts "	@atributos['#{a.name}'] = d.attributes['#{a.name}']"
+			d.puts "		@atributos['#{a.name}'] = arg.attributes['#{a.name}']"
 		end
 		d.puts
 		if @elements.instance_of?(Hash)
 			d.puts "		@elementos = Hash.new"
 			@elements.each do | c, v |
-				if v == '' or v == '?'
-					d.puts "		@elementos['#{c}'] = #{className(c)}.new(d.elements['#{c}'])"
+				if (v == '' or v == '?')
+					d.puts "		@elementos['#{c}'] = #{className(c)}.new(arg.elements['#{c}'])"
 				else
 					d.puts "		@elementos['#{c}'] = Array.new"
-					d.puts "		d.elements.each('#{c}') do | i |"
+					d.puts "		arg.elements.each('#{c}') do | i |"
 					d.puts "			@elementos['#{c}'].push(#{className(c)}.new(i))"
 					d.puts "		end"
+					end
 				end
 			end
-		end
-		d.puts
+#		d.puts
 		d.puts "	end"
 		d.puts
 		d.puts m unless m == nil
@@ -167,6 +185,13 @@ class Attribute
 	end
 end
 
+def className(name)
+	name = name.split('-')
+	name = name - ['DA', 'DE', 'DO', 'EM', 'NA', 'NO', 'OU']
+	name.map!(&:capitalize!)
+	name.join
+end
+
 if __FILE__ == $0
 	# Listagem 5.8: Expressões Regulares Utilizadas no Parser de DTD
 	# [1] = Nome do Elemento [2] = Elementos do Elemento
@@ -177,8 +202,10 @@ if __FILE__ == $0
 	RE_ATTRIBUTE_LIST = /\s*(\S*)\s*(\([^\)]*\)|\S*)\s*(#FIXED\s*\S*|\S*)/
 	# Listagem 5.8 - FINAL
 
-	dtd_file = "documento.dtd"
-	xml_file = "curriculo.xml"
+	dtd_filename = "documento.dtd"
+#	dtd_filename = ARGV[0]
+	dtd_file = File.read(dtd_filename, encoding: 'ISO-8859-1')
+	parser = DTD.new(dtd_file)
+	parser.printClasses("CurriculoVitae.rb")
     
-	var = DTD.new(dtd_file)
 end
