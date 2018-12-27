@@ -112,8 +112,10 @@ EOF
 		d.puts "	obj_loader.parse"
 		d.puts "end"
 		d.close
+
 	end
 	# Listagem 5.11 - FINAL
+
 end
 
 class Element
@@ -128,6 +130,7 @@ class Element
 		str.each_index{ |idx| @elements.store(str[idx], last_chr[idx]) }
 
 		@elements.delete('EMPTY')
+		@elements.delete('PCDATA')
 		
 		# Listagem 5.10: Busca de Atributos
 		@attributes = Array.new

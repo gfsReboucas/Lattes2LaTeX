@@ -82,7 +82,7 @@ class DadosGerais
 		@elementos['FORMACAO-ACADEMICA-TITULACAO'] = FormacaoAcademicaTitulacao.new(arg.elements['FORMACAO-ACADEMICA-TITULACAO'])
 		@elementos['ATUACOES-PROFISSIONAIS'] = AtuacoesProfissionais.new(arg.elements['ATUACOES-PROFISSIONAIS'])
 		@elementos['AREAS-DE-ATUACAO'] = AreasAtuacao.new(arg.elements['AREAS-DE-ATUACAO'])
-		@elementos['IDIOMAS'] = Idiomas.new(arg.elements['IDIOMAS'])
+		@elementos['IDIOMAS'] = Idioma.new(arg.elements['IDIOMAS'])
 		@elementos['PREMIOS-TITULOS'] = PremiosTitulos.new(arg.elements['PREMIOS-TITULOS'])
 	end
 
@@ -822,7 +822,6 @@ class Disciplina
 		@atributos['SEQUENCIA-ESPECIFICACAO'] = arg.attributes['SEQUENCIA-ESPECIFICACAO']
 
 		@elementos = Hash.new
-		@elementos['PCDATA'] = Pcdata.new(arg.elements['PCDATA'])
 	end
 
 
@@ -926,7 +925,6 @@ class IntegrantesProjeto
 		@atributos['NRO-ID-CNPQ'] = arg.attributes['NRO-ID-CNPQ']
 
 		@elementos = Hash.new
-		@elementos['PCDATA'] = Pcdata.new(arg.elements['PCDATA'])
 	end
 
 
@@ -1057,7 +1055,6 @@ class Treinamento
 		@atributos['SEQUENCIA-ESPECIFICACAO'] = arg.attributes['SEQUENCIA-ESPECIFICACAO']
 
 		@elementos = Hash.new
-		@elementos['PCDATA'] = Pcdata.new(arg.elements['PCDATA'])
 	end
 
 

@@ -1,0 +1,153 @@
+% !TeX spellcheck = pt_BR
+%% !TeX root = #{filename}
+% !TeX root = header
+% !TeX encoding = utf8
+% !TeX program = LuaLaTeX
+% !BIB program = biber
+
+% arara: lualatex
+% arara: clean: {
+% arara: --> extensions: [aux, bbl, bcf, blg, log, toc, soc, out, run.xml, synctex, synctex(busy), xml]
+% arara: --> 	}
+
+\RequirePackage[l2tabu,orthodox]{nag} % Old habits die hard
+
+\documentclass[10pt,
+			   a4paper,
+			   twoside,
+			   showtrims,
+			   extrafontsizes,
+			   openright,
+			   oldfontcommands]{memoir}
+
+\usepackage{polyglossia} % multilingual typesetting and appropriate hyphenation
+\setmainlanguage{brazil}
+\setotherlanguage[variant=us]{english}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[section]{placeins} % to ensure that figures will appear in the section they are mentioned
+\usepackage{amsmath} % to use align environment
+\usepackage{siunitx} % to insert units properly
+\usepackage{graphicx} % to handle figures
+\usepackage{booktabs} % To thicken table lines
+\usepackage{multirow} % command in table environment
+\usepackage{todonotes} % to insert marks
+\usepackage{courier} % to use courier font
+\usepackage[hyphens]{url} % Allow hyphens in URL's
+\usepackage[unicode=false,psdextra]{hyperref} % References package
+\usepackage{graphicx} % Including graphics and using colours
+\usepackage{enumitem} % to customize the appearance of lists
+%\usepackage{indentfirst}
+\usepackage{caption}
+\usepackage{footnote}
+\usepackage{anyfontsize}
+
+\usepackage[showdow,useregional]{datetime2}
+\makeatletter
+\newcommand{\monthyeardate}{%
+	\selectlanguage{portuguese}
+	\DTMenglishmonthname{\@dtm@month}/\@dtm@year
+}
+\makeatother
+
+\usepackage{xcolor} % Defined more color names
+\definecolor{cinza}{RGB}{160, 160, 160}
+
+% The following adds the implicit \FloatBarrier to \subsection:
+% taken from: (27/03/2018)
+% https://tex.stackexchange.com/questions/118662/use-placeins-for-subsections
+\makeatletter
+\AtBeginDocument{%
+	\expandafter\renewcommand\expandafter\subsection\expandafter{%
+		\expandafter\@fb@secFB\subsection
+	}%
+}
+\makeatother
+
+\title{Curriculum Vitae}
+\author{AUTOR}
+\date{\monthyeardate}
+
+% Hypersetup
+\hypersetup{
+	pdfauthor={\theauthor},
+	pdftitle={\thetitle},
+	pdfsubject={},
+	pdfdisplaydoctitle,
+	bookmarksnumbered=true,
+	bookmarksopen,
+	breaklinks,
+	linktoc=all,
+	plainpages=false,
+	unicode=true,
+	colorlinks=false,
+	hidelinks, % Do not show boxes or colored links.
+}
+
+% Text fonts (http://www.macfreek.nl/memory/Fonts_in_LaTeX)
+% Install fonts from /usr/local/texlive/<version>/texmf-dist/fonts/opentype/public
+\usepackage{fontspec}
+\setmainfont{Arial}
+
+\setlrmarginsandblock{2.00cm}{2.00cm}{*}
+\setulmarginsandblock{2.54cm}{2.54cm}{1}
+\checkandfixthelayout 
+
+\nouppercaseheads
+\makepagestyle{Lattes}
+\makeevenhead{Lattes}{}{}{}
+\makeoddhead{Lattes}{}{}{}
+\makeevenfoot{Lattes}{Página gerada pelo sistema Currículo Lattes em 15/12/2018 as 11:45:50}{}{Página \thepage{} de \thelastpage}
+\makeoddfoot{Lattes}{Página gerada pelo sistema Currículo Lattes em 15/12/2018 as 11:45:50}{}{Página \thepage{} de \thelastpage}
+\makepsmarks{Lattes}{}
+
+\pagestyle{Lattes}
+
+%capa, adaptado de:
+% http://zoonek.free.fr/LaTeX/LaTeX_samples_title/0.html
+%\makeatletter
+%\def\maketitle{%
+%	\null
+%	\thispagestyle{empty}%
+%	\vfill
+%	\begin{center}\leavevmode
+%		\vskip 228pt
+%		{\fontsize{13}{16}\selectfont \textcolor{cinza}{\textbf{Geraldo}}\par}%
+%		{\fontsize{10}{12}\selectfont Curriculo Vitae\par}%
+%		\vskip 1cm
+%		{\@month/\@year}%
+%	\end{center}%
+%	\vfill
+%	\null
+%	\cleardoublepage
+%}
+%\makeatother
+
+\makeatletter
+\def\maketitle{%
+%	\null
+%	\thispagestyle{empty}%
+%	\vfill
+	\begin{center}
+		\vspace{65.5mm} % aproximado
+		{\fontsize{13}{16}\selectfont \textcolor{cinza}{\textbf{\theauthor}}\par}%
+		{\thetitle\par}%
+		\vskip 1cm
+		{\thedate\par}%
+	\end{center}%
+	\vfill
+	\null
+	\cleardoublepage
+}
+\makeatother
+
+\begin{document}
+	\maketitle
+
+	\mainmatter
+	{\fontsize{13}{16}\selectfont \textcolor{cinza}{\textbf{\theauthor}}}\par
+	\thetitle\par\par
+	\hrule
+    
+\end{document}
