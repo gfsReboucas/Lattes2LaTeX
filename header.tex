@@ -15,14 +15,17 @@
 \documentclass[10pt,
 			   a4paper,
 			   twoside,
-			   showtrims,
 			   extrafontsizes,
 			   openright,
+%			   showtrims,
 			   oldfontcommands]{memoir}
 
 \usepackage{polyglossia} % multilingual typesetting and appropriate hyphenation
-\setmainlanguage{brazil}
+%\setmainlanguage[variant=brazil]{portuges}
+\setmainlanguage{portuges}
 \setotherlanguage[variant=us]{english}
+
+\usepackage[useregional]{datetime2}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -43,16 +46,14 @@
 \usepackage{footnote}
 \usepackage{anyfontsize}
 
-\usepackage[showdow,useregional]{datetime2}
 \makeatletter
 \newcommand{\monthyeardate}{%
-	\selectlanguage{portuguese}
-	\DTMenglishmonthname{\@dtm@month}/\@dtm@year
+	\DTMportugesmonthname{\@dtm@month}/\@dtm@year
 }
 \makeatother
 
 \usepackage{xcolor} % Defined more color names
-\definecolor{cinza}{RGB}{160, 160, 160}
+\definecolor{cinza}{RGB}{160,160,160}
 
 % The following adds the implicit \FloatBarrier to \subsection:
 % taken from: (27/03/2018)
@@ -66,13 +67,13 @@
 \makeatother
 
 \title{Curriculum Vitae}
-\author{AUTOR}
+\author{AUTOR} % #{filename}
 \date{\monthyeardate}
 
 % Hypersetup
 \hypersetup{
 	pdfauthor={\theauthor},
-	pdftitle={\thetitle},
+	pdftitle={\thetitle{} de \theauthor},
 	pdfsubject={},
 	pdfdisplaydoctitle,
 	bookmarksnumbered=true,
@@ -90,64 +91,63 @@
 \usepackage{fontspec}
 \setmainfont{Arial}
 
-\setlrmarginsandblock{2.00cm}{2.00cm}{*}
-\setulmarginsandblock{2.54cm}{2.54cm}{1}
+\setlrmarginsandblock{15mm}{15mm}{*}
+\setulmarginsandblock{25mm}{25mm}{*}
 \checkandfixthelayout 
+
+%\usepackage[showframe,pass]{geometry}
+%\geometry{showframe,
+%		  a4paper,
+%	  	  left=15mm,
+%  	 	  right=15mm,
+%   	  	  bottom=20mm,
+%     	  top=20mm,
+%       	  marginparsep=0mm,
+%          marginparwidth=0mm}
 
 \nouppercaseheads
 \makepagestyle{Lattes}
 \makeevenhead{Lattes}{}{}{}
 \makeoddhead{Lattes}{}{}{}
-\makeevenfoot{Lattes}{Página gerada pelo sistema Currículo Lattes em 15/12/2018 as 11:45:50}{}{Página \thepage{} de \thelastpage}
-\makeoddfoot{Lattes}{Página gerada pelo sistema Currículo Lattes em 15/12/2018 as 11:45:50}{}{Página \thepage{} de \thelastpage}
+\makeevenfoot{Lattes}{Página gerada pelo sistema Currículo Lattes em DATA as HORA}{}{Página \thepage{} de \thelastpage}
+\makeoddfoot{Lattes}{Página gerada pelo sistema Currículo Lattes em DATA as HORA}{}{Página \thepage{} de \thelastpage}
 \makepsmarks{Lattes}{}
 
 \pagestyle{Lattes}
 
 %capa, adaptado de:
 % http://zoonek.free.fr/LaTeX/LaTeX_samples_title/0.html
-%\makeatletter
-%\def\maketitle{%
-%	\null
-%	\thispagestyle{empty}%
-%	\vfill
-%	\begin{center}\leavevmode
-%		\vskip 228pt
-%		{\fontsize{13}{16}\selectfont \textcolor{cinza}{\textbf{Geraldo}}\par}%
-%		{\fontsize{10}{12}\selectfont Curriculo Vitae\par}%
-%		\vskip 1cm
-%		{\@month/\@year}%
-%	\end{center}%
-%	\vfill
-%	\null
-%	\cleardoublepage
-%}
-%\makeatother
-
 \makeatletter
 \def\maketitle{%
-%	\null
-%	\thispagestyle{empty}%
-%	\vfill
+	\null
+	\thispagestyle{empty}%
+	\vfill
 	\begin{center}
-		\vspace{65.5mm} % aproximado
+		\vspace{46mm} % aproximado
 		{\fontsize{13}{16}\selectfont \textcolor{cinza}{\textbf{\theauthor}}\par}%
 		{\thetitle\par}%
-		\vskip 1cm
+		\vspace{100mm} % aproximado
 		{\thedate\par}%
 	\end{center}%
-	\vfill
 	\null
 	\cleardoublepage
 }
 \makeatother
+
+\DeclareRobustCommand{\linha}{
+	\noindent\hfil\rule[-1mm]{\textwidth}{0.2mm}\hfil
+}
 
 \begin{document}
 	\maketitle
 
 	\mainmatter
 	{\fontsize{13}{16}\selectfont \textcolor{cinza}{\textbf{\theauthor}}}\par
-	\thetitle\par\par
-	\hrule
-    
+	\thetitle\par
+	\linha
+	\section*{Nome Civil}
+	\section*{Dados Pessoais}
+	\linha
+	\section*{Formação acadêmica/titulação}
+	
 \end{document}

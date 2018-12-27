@@ -11,7 +11,8 @@
             "cwd": "${workspaceRoot}",
             "program": "${workspaceRoot}/DTD.rb"
 //            "program": "${workspaceRoot}/CurriculoVitae.rb"
-        },
+//            "program": "${workspaceRoot}/download.rb"
+},
         {
             "name": "Listen for rdebug-ide",
             "type": "Ruby",

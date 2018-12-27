@@ -8045,7 +8045,7 @@ end
 
 
 if __FILE__ == $0
-	xml_filename = 'curriculo.xml'
+	xml_filename = 'cv_lattes.xml'
 #	xml_filename = ARGV[0]
 
 	xml_file = REXML::Document.new File.new(xml_filename)

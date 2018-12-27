@@ -7,22 +7,35 @@ class DTD
 
 		@map = Hash.new
 
-		# Listagem 5.7: Mapeamento de Métodos para o Currículo Lattes
-		@map['CURRICULO-VITAE'] = <<EOF
-		def parse
-			puts '\\documentclass[a4paper]{article}'
-			puts '\\usepackage[brazil]{babel}'
-			puts '\\usepackage[utf8]{inputenc}'
-			puts
-			puts '\\begin{document}'
-			@elementos['DADOS-GERAIS'].toTEX
-			puts '\\newpage'
-			@elementos['PRODUCAO-BIBLIOGRAFICA'].toTEX
-			puts '\\newpage'
-			@elementos['DADOS-COMPLEMENTARES'].toTEX
-			puts '\\end{document}'
+ 		@map['CURRICULO-VITAE'] = <<EOF
+		def parse(CV_filename)
+			TeX_file = IO.read("header.tex")
+			TeX_file.gsub! 'AUTOR', @atributos['NOME-COMPLETO']
+			TeX_file.gsub! 'DATA', @atributos['DATA-ATUALIZACAO']
+			TeX_file.gsub! 'HORA', @atributos['HORA-ATUALIZACAO']
+
+
+			CV_file = File.open(CV_filename, "w")
+			CV_file.write(TeX_file)
 		end
 EOF
+
+		# Listagem 5.7: Mapeamento de Métodos para o Currículo Lattes
+# 		@map['CURRICULO-VITAE'] = <<EOF
+# 		def parse
+# 			puts '\\documentclass[a4paper]{article}'
+# 			puts '\\usepackage[brazil]{babel}'
+# 			puts '\\usepackage[utf8]{inputenc}'
+# 			puts
+# 			puts '\\begin{document}'
+# 			@elementos['DADOS-GERAIS'].toTEX
+# 			puts '\\newpage'
+# 			@elementos['PRODUCAO-BIBLIOGRAFICA'].toTEX
+# 			puts '\\newpage'
+# 			@elementos['DADOS-COMPLEMENTARES'].toTEX
+# 			puts '\\end{document}'
+# 		end
+# EOF
 		# Listagem 6.2: Métodos de Geração do Código LATEX: Informações Pessoais e Resumos
 		# ...
 		@map['DADOS-GERAIS'] = <<EOF
@@ -108,8 +121,12 @@ EOF
 		d.puts "#	xml_filename = ARGV[0]"
 		d.puts
 		d.puts "	xml_file = REXML::Document.new File.new(xml_filename)"
+		d.puts
+		d.puts "	TeX_filename = 'curriculo.tex'"
+		d.puts "#	TeX_filename = ARGV[1]"
+		d.puts
 		d.puts "	obj_loader = #{className(@elements[0].name)}.new(xml_file.elements['#{@elements[0].name}'])"
-		d.puts "	obj_loader.parse"
+		d.puts "	obj_loader.parse(TeX_filename)"
 		d.puts "end"
 		d.close
 
