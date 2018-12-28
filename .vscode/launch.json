@@ -9,9 +9,9 @@
             "type": "Ruby",
             "request": "launch",
             "cwd": "${workspaceRoot}",
-            "program": "${workspaceRoot}/DTD.rb"
-//            "program": "${workspaceRoot}/CurriculoVitae.rb"
-//            "program": "${workspaceRoot}/download.rb"
+//            "program": "${workspaceRoot}/DTD.rb"
+            // "program": "${workspaceRoot}/CurriculoVitae.rb"
+           "program": "${workspaceRoot}/XML2PDF.rb"
 },
         {
             "name": "Listen for rdebug-ide",

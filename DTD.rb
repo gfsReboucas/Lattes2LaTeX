@@ -8,21 +8,30 @@ class DTD
 		@map = Hash.new
 
  		@map['CURRICULO-VITAE'] = <<EOF
-		def parse(CV_filename)
-			TeX_file = IO.read("header.tex")
-			TeX_file.gsub! 'AUTOR', @atributos['NOME-COMPLETO']
-			TeX_file.gsub! 'DATA', @atributos['DATA-ATUALIZACAO']
-			TeX_file.gsub! 'HORA', @atributos['HORA-ATUALIZACAO']
+		def XML2TeX(cv_filename)
+			tmp = @atributos['DATA-ATUALIZACAO']
 
+			# insere separadores e converte data para o formato padrão do pacote datetime2
+			data = tmp[4..7] + "-" + tmp[2..3] + "-" + tmp[0..1]
 
-			CV_file = File.open(CV_filename, "w")
-			CV_file.write(TeX_file)
+			tmp = @atributos['HORA-ATUALIZACAO']
+			hora = tmp[0..1] + ":" + tmp[2..3] + ":" + tmp[4..5]
+
+			file_TeX = IO.read("header.tex")
+			file_TeX.gsub! 'NOME-COMPLETO'   , @elementos['DADOS-GERAIS'].atributos['NOME-COMPLETO']
+			file_TeX.gsub! 'DATA-ATUALIZACAO', data
+			file_TeX.gsub! 'HORA-ATUALIZACAO', hora
+			file_TeX.gsub! 'cv_filename', cv_filename
+			
+			cv_file = File.new(cv_filename, "w")
+			cv_file.write(file_TeX)
+			cv_file.close
 		end
 EOF
 
 		# Listagem 5.7: Mapeamento de Métodos para o Currículo Lattes
 # 		@map['CURRICULO-VITAE'] = <<EOF
-# 		def parse
+# 		def XML2TeX
 # 			puts '\\documentclass[a4paper]{article}'
 # 			puts '\\usepackage[brazil]{babel}'
 # 			puts '\\usepackage[utf8]{inputenc}'
@@ -103,7 +112,7 @@ EOF
 EOF
 		# Listagem 6.9 - FINAL
 	end
-	
+
 	# Listagem 5.11: Método de Geração de Classes no Objeto DTD
 	def printClasses(d)
 		d = File.new(d, "w")
@@ -117,16 +126,19 @@ EOF
 		end
 		d.puts
 		d.puts "if __FILE__ == $0"
-		d.puts "	xml_filename = 'curriculo.xml'"
+		d.puts "	xml_filename = 'cv_lattes.xml'"
 		d.puts "#	xml_filename = ARGV[0]"
 		d.puts
 		d.puts "	xml_file = REXML::Document.new File.new(xml_filename)"
 		d.puts
-		d.puts "	TeX_filename = 'curriculo.tex'"
+		d.puts "	TeX_filename = 'cv_lattes.tex'"
 		d.puts "#	TeX_filename = ARGV[1]"
 		d.puts
 		d.puts "	obj_loader = #{className(@elements[0].name)}.new(xml_file.elements['#{@elements[0].name}'])"
-		d.puts "	obj_loader.parse(TeX_filename)"
+		d.puts "	obj_loader.XML2TeX(TeX_filename)"
+		d.puts
+		d.puts "	TeX2PDF(TeX_filename)"
+		d.puts
 		d.puts "end"
 		d.close
 
@@ -142,7 +154,8 @@ class Element
 		@elements = Hash.new
 		str = m[1].split(',').map{|x| x.tr("( )","")}
 		last_chr = str.map{|x| x[-1]}
-		last_chr = last_chr.map{ |x| x.tr("QWERTYUIOPASDFGHJKLZXCVBNM","")}
+		# last_chr = last_chr.map{ |x| x.tr("QWERTYUIOPASDFGHJKLZXCVBNM", "")} # (10...36).map{ |i| i.to_s 36}.join.upcase
+		last_chr = last_chr.map{ |x| x.tr((10...36).map{ |i| i.to_s 36}.join.upcase, "")}
 		str = str.map{|x| x.tr("#?*+","")}
 		str.each_index{ |idx| @elements.store(str[idx], last_chr[idx]) }
 
@@ -163,6 +176,8 @@ class Element
 	# Listagem 5.12: Método de Impressão de Classe no Objeto Element
 	def printClass(d, m)
 		d.puts "class #{className(@name)}"
+		d.puts
+		d.puts "attr_reader :atributos"
 		d.puts
 		d.puts "	def initialize(arg)"
 		d.puts
@@ -212,20 +227,20 @@ def className(name)
 	name.join
 end
 
-if __FILE__ == $0
-	# Listagem 5.8: Expressões Regulares Utilizadas no Parser de DTD
-	# [1] = Nome do Elemento [2] = Elementos do Elemento
-	RE_ELEMENT = /<!ELEMENT\ (.*)\ (EMPTY|ANY|\(.*\))>/
-	# [1] = Nome do Elemento [2] = Lista de Atributos do Elemento
-	RE_ATTRIBUTE = /<!ATTLIST\s*(\S*)\s*([^>]*)>/
-	# [1] = Nome do Atributo [2] = Tipo [3] = Valor
-	RE_ATTRIBUTE_LIST = /\s*(\S*)\s*(\([^\)]*\)|\S*)\s*(#FIXED\s*\S*|\S*)/
-	# Listagem 5.8 - FINAL
+# if __FILE__ == $0
+# 	# Listagem 5.8: Expressões Regulares Utilizadas no Parser de DTD
+# 	# [1] = Nome do Elemento [2] = Elementos do Elemento
+# 	RE_ELEMENT = /<!ELEMENT\ (.*)\ (EMPTY|ANY|\(.*\))>/
+# 	# [1] = Nome do Elemento [2] = Lista de Atributos do Elemento
+# 	RE_ATTRIBUTE = /<!ATTLIST\s*(\S*)\s*([^>]*)>/
+# 	# [1] = Nome do Atributo [2] = Tipo [3] = Valor
+# 	RE_ATTRIBUTE_LIST = /\s*(\S*)\s*(\([^\)]*\)|\S*)\s*(#FIXED\s*\S*|\S*)/
+# 	# Listagem 5.8 - FINAL
 
-	dtd_filename = "documento.dtd"
-#	dtd_filename = ARGV[0]
-	dtd_file = File.read(dtd_filename, encoding: 'ISO-8859-1')
-	parser = DTD.new(dtd_file)
-	parser.printClasses("CurriculoVitae.rb")
+# 	dtd_filename = "documento.dtd"
+# #	dtd_filename = ARGV[0]
+# 	dtd_file = File.read(dtd_filename, encoding: 'ISO-8859-1')
+# 	parser = DTD.new(dtd_file)
+# 	parser.printClasses("CurriculoVitae.rb")
     
-end
+# end

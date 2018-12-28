@@ -3,6 +3,8 @@ include REXML
 
 class CurriculoVitae
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -24,24 +26,30 @@ class CurriculoVitae
 		@elementos['DADOS-COMPLEMENTARES'] = DadosComplementares.new(arg.elements['DADOS-COMPLEMENTARES'])
 	end
 
-		def parse
-			puts '\documentclass[a4paper]{article}'
-			puts '\usepackage[brazil]{babel}'
-			puts '\usepackage[utf8]{inputenc}'
-			puts
-			puts '\begin{document}'
-			@elementos['DADOS-GERAIS'].toTEX
-			puts '\newpage'
-			@elementos['PRODUCAO-BIBLIOGRAFICA'].toTEX
-			puts '\newpage'
-			@elementos['DADOS-COMPLEMENTARES'].toTEX
-			puts '\end{document}'
+		def XML2TeX(cv_filename)
+			tmp = @atributos['DATA-ATUALIZACAO']
+			data = tmp[4..7] + "-" + tmp[2..3] + "-" + tmp[0..1]
+
+			tmp = @atributos['HORA-ATUALIZACAO']
+			hora = tmp[0..1] + ":" + tmp[2..3] + ":" + tmp[4..5]
+
+			file_TeX = IO.read("header.tex")
+			file_TeX.gsub! 'NOME-COMPLETO'   , @elementos['DADOS-GERAIS'].atributos['NOME-COMPLETO']
+			file_TeX.gsub! 'DATA-ATUALIZACAO', data
+			file_TeX.gsub! 'HORA-ATUALIZACAO', hora
+			file_TeX.gsub! 'cv_filename', cv_filename
+			
+			cv_file = File.new(cv_filename, "w")
+			cv_file.write(file_TeX)
+			cv_file.close
 		end
 
 end
 
 
 class DadosGerais
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -102,6 +110,8 @@ end
 
 class ResumoCv
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -123,6 +133,8 @@ end
 
 class OutrasInformacoesRelevantes
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -138,6 +150,8 @@ end
 
 
 class Endereco
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -156,6 +170,8 @@ end
 
 
 class EnderecoProfissional
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -191,6 +207,8 @@ end
 
 class EnderecoResidencial
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -219,6 +237,8 @@ end
 
 class PalavrasChave
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -240,6 +260,8 @@ end
 
 class AreasConhecimento
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -258,24 +280,7 @@ end
 
 class AreaConhecimento
 
-	def initialize(arg)
-
-		return if arg == nil
-
-		@atributos = Hash.new
-		@atributos['NOME-GRANDE-AREA-DO-CONHECIMENTO'] = arg.attributes['NOME-GRANDE-AREA-DO-CONHECIMENTO']
-		@atributos['NOME-DA-AREA-DO-CONHECIMENTO'] = arg.attributes['NOME-DA-AREA-DO-CONHECIMENTO']
-		@atributos['NOME-DA-SUB-AREA-DO-CONHECIMENTO'] = arg.attributes['NOME-DA-SUB-AREA-DO-CONHECIMENTO']
-		@atributos['NOME-DA-ESPECIALIDADE'] = arg.attributes['NOME-DA-ESPECIALIDADE']
-
-		@elementos = Hash.new
-	end
-
-
-end
-
-
-class AreaConhecimento
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -295,6 +300,29 @@ end
 
 
 class AreaConhecimento
+
+attr_reader :atributos
+
+	def initialize(arg)
+
+		return if arg == nil
+
+		@atributos = Hash.new
+		@atributos['NOME-GRANDE-AREA-DO-CONHECIMENTO'] = arg.attributes['NOME-GRANDE-AREA-DO-CONHECIMENTO']
+		@atributos['NOME-DA-AREA-DO-CONHECIMENTO'] = arg.attributes['NOME-DA-AREA-DO-CONHECIMENTO']
+		@atributos['NOME-DA-SUB-AREA-DO-CONHECIMENTO'] = arg.attributes['NOME-DA-SUB-AREA-DO-CONHECIMENTO']
+		@atributos['NOME-DA-ESPECIALIDADE'] = arg.attributes['NOME-DA-ESPECIALIDADE']
+
+		@elementos = Hash.new
+	end
+
+
+end
+
+
+class AreaConhecimento
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -315,6 +343,8 @@ end
 
 class SetoresAtividade
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -332,6 +362,8 @@ end
 
 
 class FormacaoAcademicaTitulacao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -396,6 +428,8 @@ end
 
 class CursoTecnicoProfissionalizante
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -426,6 +460,8 @@ end
 
 class EnsinoFundamentalPrimeiroGrau
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -448,6 +484,8 @@ end
 
 class EnsinoMedioSegundoGrau
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -469,6 +507,8 @@ end
 
 
 class Graduacao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -513,6 +553,8 @@ end
 
 class Aperfeicoamento
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -548,6 +590,8 @@ end
 
 class Especializacao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -581,6 +625,8 @@ end
 
 
 class Mestrado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -629,6 +675,8 @@ end
 
 class MestradoProfissionalizante
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -669,6 +717,8 @@ end
 
 
 class Doutorado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -723,6 +773,8 @@ end
 
 class ResidenciaMedica
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -754,6 +806,8 @@ end
 
 class LivreDocencia
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -778,6 +832,8 @@ end
 
 
 class PosDoutorado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -814,6 +870,8 @@ end
 
 class Disciplina
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -829,6 +887,8 @@ end
 
 
 class LinhaPesquisa
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -853,6 +913,8 @@ end
 
 
 class ProjetoPesquisa
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -894,6 +956,8 @@ end
 
 class EquipeProjeto
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -912,6 +976,8 @@ end
 
 
 class IntegrantesProjeto
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -933,6 +999,8 @@ end
 
 class FinanciadoresProjeto
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -951,6 +1019,8 @@ end
 
 
 class FinanciadorProjeto
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -971,6 +1041,8 @@ end
 
 class ProducoesCtProjeto
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -989,6 +1061,8 @@ end
 
 
 class ProducaoCtProjeto
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1009,6 +1083,8 @@ end
 
 class Orientacoes
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1027,6 +1103,8 @@ end
 
 
 class Orientacao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1047,6 +1125,8 @@ end
 
 class Treinamento
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1062,6 +1142,8 @@ end
 
 
 class AtuacoesProfissionais
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1081,6 +1163,8 @@ end
 
 
 class AtuacaoProfissional
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1115,6 +1199,8 @@ end
 
 class Vinculos
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1145,6 +1231,8 @@ end
 
 class AtividadesDirecaoAdministracao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1163,6 +1251,8 @@ end
 
 
 class DirecaoAdministracao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1192,6 +1282,8 @@ end
 
 class AtividadesPesquisaDesenvolvimento
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1210,6 +1302,8 @@ end
 
 
 class PesquisaDesenvolvimento
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1240,6 +1334,8 @@ end
 
 class AtividadesEnsino
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1258,6 +1354,8 @@ end
 
 
 class Ensino
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1290,6 +1388,8 @@ end
 
 class AtividadesEstagio
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1308,6 +1408,8 @@ end
 
 
 class Estagio
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1335,6 +1437,8 @@ end
 
 class AtividadesServicoTecnicoEspecializado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1353,6 +1457,8 @@ end
 
 
 class ServicoTecnicoEspecializado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1380,6 +1486,8 @@ end
 
 class AtividadesExtensaoUniversitaria
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1398,6 +1506,8 @@ end
 
 
 class ExtensaoUniversitaria
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1425,6 +1535,8 @@ end
 
 class AtividadesTreinamentoMinistrado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1443,6 +1555,8 @@ end
 
 
 class TreinamentoMinistrado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1473,6 +1587,8 @@ end
 
 class OutrasAtividadesTecnicoCientifica
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1491,6 +1607,8 @@ end
 
 
 class OutraAtividadeTecnicoCientifica
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1518,6 +1636,8 @@ end
 
 class AtividadesConselhoComissaoConsultoria
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1536,6 +1656,8 @@ end
 
 
 class ConselhoComissaoConsultoria
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1563,6 +1685,8 @@ end
 
 class AreasAtuacao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1581,6 +1705,8 @@ end
 
 
 class AreaAtuacao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1601,6 +1727,8 @@ end
 
 
 class Idioma
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1623,6 +1751,8 @@ end
 
 class PremiosTitulos
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1641,6 +1771,8 @@ end
 
 
 class PremioTitulo
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1661,6 +1793,8 @@ end
 
 class AtividadesParticipacaoProjeto
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1679,6 +1813,8 @@ end
 
 
 class ParticipacaoProjeto
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1709,6 +1845,8 @@ end
 
 class ProducaoBibliografica
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1738,6 +1876,8 @@ end
 
 class TrabalhosEventos
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1756,6 +1896,8 @@ end
 
 
 class TrabalhoEventos
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1783,6 +1925,8 @@ end
 
 class DadosBasicosTrabalho
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1808,6 +1952,8 @@ end
 
 
 class DetalhamentoTrabalho
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1838,6 +1984,8 @@ end
 
 class Autores
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1858,6 +2006,8 @@ end
 
 class InformacoesAdicionais
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1874,6 +2024,8 @@ end
 
 
 class ArtigosPublicados
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1893,6 +2045,8 @@ end
 
 
 class ArtigoPublicado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1920,6 +2074,8 @@ end
 
 
 class DadosBasicosArtigo
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -1954,6 +2110,8 @@ end
 
 class DetalhamentoArtigo
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1977,6 +2135,8 @@ end
 
 class ArtigosAceitosParaPublicacao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -1995,6 +2155,8 @@ end
 
 
 class ArtigoAceitoParaPublicacao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2022,6 +2184,8 @@ end
 
 class LivrosCapitulos
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2038,6 +2202,8 @@ end
 
 
 class LivrosPublicadosOrganizados
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2058,6 +2224,8 @@ end
 
 class CapitulosLivrosPublicados
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2076,6 +2244,8 @@ end
 
 
 class LivroPublicadoOrganizado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2102,6 +2272,8 @@ end
 
 
 class DadosBasicosLivro
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2130,6 +2302,8 @@ end
 
 class DetalhamentoLivro
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2151,6 +2325,8 @@ end
 
 
 class CapituloLivroPublicado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2178,6 +2354,8 @@ end
 
 class DadosBasicosCapitulo
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2204,6 +2382,8 @@ end
 
 class DetalhamentoCapitulo
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2229,6 +2409,8 @@ end
 
 class TextosJornaisRevistas
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2247,6 +2429,8 @@ end
 
 
 class TextoJornalRevista
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2274,6 +2458,8 @@ end
 
 class DadosBasicosTexto
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2300,6 +2486,8 @@ end
 
 class DetalhamentoTexto
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2322,6 +2510,8 @@ end
 
 
 class DemaisTiposProducaoBibliografica
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2354,6 +2544,8 @@ end
 
 class OutraProducaoBibliografica
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2379,6 +2571,8 @@ end
 
 
 class DadosBasicosOutraProducao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2407,6 +2601,8 @@ end
 
 class DetalhamentoOutraProducao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2425,6 +2621,8 @@ end
 
 
 class PartituraMusical
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2452,6 +2650,8 @@ end
 
 class DadosBasicosPartitura
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2477,6 +2677,8 @@ end
 
 class DetalhamentoPartitura
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2496,6 +2698,8 @@ end
 
 
 class PrefacioPosfacio
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2523,6 +2727,8 @@ end
 
 class DadosBasicosPrefacioPosfacio
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2549,6 +2755,8 @@ end
 
 class DetalhamentoPrefacioPosfacio
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2572,6 +2780,8 @@ end
 
 
 class Traducao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2599,6 +2809,8 @@ end
 
 class DadosBasicosTraducao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2623,6 +2835,8 @@ end
 
 
 class DetalhamentoTraducao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2649,6 +2863,8 @@ end
 
 
 class ProducaoTecnica
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2709,6 +2925,8 @@ end
 
 class RegistroPatente
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2736,6 +2954,8 @@ end
 
 class Software
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2761,6 +2981,8 @@ end
 
 
 class DadosBasicosSoftware
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2789,6 +3011,8 @@ end
 
 class DetalhamentoSoftware
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2813,6 +3037,8 @@ end
 
 
 class ProdutoTecnologico
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2839,6 +3065,8 @@ end
 
 
 class DadosBasicosProdutoTecnologico
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2867,6 +3095,8 @@ end
 
 class DetalhamentoProdutoTecnologico
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2891,6 +3121,8 @@ end
 
 class Titulares
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2911,6 +3143,8 @@ end
 
 
 class Patente
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -2938,6 +3172,8 @@ end
 
 class DadosBasicosPatente
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2961,6 +3197,8 @@ end
 
 class DetalhamentoPatente
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -2983,6 +3221,8 @@ end
 
 
 class CultivarProtegida
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3010,6 +3250,8 @@ end
 
 class CultivarRegistrada
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3036,6 +3278,8 @@ end
 
 class DadosBasicosCultivar
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3056,6 +3300,8 @@ end
 
 
 class DetalhamentoCultivar
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3078,6 +3324,8 @@ end
 
 
 class DesenhoIndustrial
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3105,6 +3353,8 @@ end
 
 class DadosBasicosDesenhoIndustrial
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3125,6 +3375,8 @@ end
 
 
 class DetalhamentoDesenhoIndustrial
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3147,6 +3399,8 @@ end
 
 
 class Marca
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3174,6 +3428,8 @@ end
 
 class DadosBasicosMarca
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3194,6 +3450,8 @@ end
 
 
 class DetalhamentoMarca
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3216,6 +3474,8 @@ end
 
 
 class TopografiaCircuitoIntegrado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3243,6 +3503,8 @@ end
 
 class DadosBasicosTopografiaCircuitoIntegrado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3263,6 +3525,8 @@ end
 
 
 class DetalhamentoTopografiaCircuitoIntegrado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3285,6 +3549,8 @@ end
 
 
 class ProcessosTecnicas
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3312,6 +3578,8 @@ end
 
 class DadosBasicosProcessosTecnicas
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3338,6 +3606,8 @@ end
 
 class DetalhamentoProcessosTecnicas
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3361,6 +3631,8 @@ end
 
 
 class TrabalhoTecnico
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3388,6 +3660,8 @@ end
 
 class DadosBasicosTrabalhoTecnico
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3413,6 +3687,8 @@ end
 
 class DetalhamentoTrabalhoTecnico
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3434,6 +3710,8 @@ end
 
 
 class DemaisTiposProducaoTecnica
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3498,6 +3776,8 @@ end
 
 class ApresentacaoTrabalho
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3524,6 +3804,8 @@ end
 
 class DadosBasicosApresentacaoTrabalho
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3548,6 +3830,8 @@ end
 
 class DetalhamentoApresentacaoTrabalho
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3567,6 +3851,8 @@ end
 
 
 class CartaMapaSimilar
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3594,6 +3880,8 @@ end
 
 class DadosBasicosCartaMapaSimilar
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3619,6 +3907,8 @@ end
 
 class DetalhamentoCartaMapaSimilar
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3639,6 +3929,8 @@ end
 
 
 class CursoCurtaDuracaoMinistrado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3666,6 +3958,8 @@ end
 
 class DadosBasicosCursosCurtaDuracaoMinistrado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3692,6 +3986,8 @@ end
 
 class DetalhamentoCursosCurtaDuracaoMinistrado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3713,6 +4009,8 @@ end
 
 
 class DesenvolvimentoMaterialDidaticoInstrucional
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3739,6 +4037,8 @@ end
 
 
 class DadosBasicosMaterialDidaticoInstrucional
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3767,6 +4067,8 @@ end
 
 class DetalhamentoMaterialDidaticoInstrucional
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3783,6 +4085,8 @@ end
 
 
 class Editoracao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3810,6 +4114,8 @@ end
 
 class DadosBasicosEditoracao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3835,6 +4141,8 @@ end
 
 class DetalhamentoEditoracao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3853,6 +4161,8 @@ end
 
 
 class ManutencaoObraArtistica
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3880,6 +4190,8 @@ end
 
 class DadosBasicosManutencaoObraArtistica
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3904,6 +4216,8 @@ end
 
 class DetalhamentoManutencaoObraArtistica
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3924,6 +4238,8 @@ end
 
 
 class Maquete
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -3951,6 +4267,8 @@ end
 
 class DadosBasicosMaquete
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3975,6 +4293,8 @@ end
 
 class DetalhamentoMaquete
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -3994,6 +4314,8 @@ end
 
 
 class OrganizacaoEvento
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4020,6 +4342,8 @@ end
 
 
 class DadosBasicosOrganizacaoEvento
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4048,6 +4372,8 @@ end
 
 class DetalhamentoOrganizacaoEvento
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4068,6 +4394,8 @@ end
 
 
 class OutraProducaoTecnica
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4096,6 +4424,8 @@ end
 
 class DadosBasicosOutraProducaoTecnica
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4123,6 +4453,8 @@ end
 
 class DetalhamentoOutraProducaoTecnica
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4142,6 +4474,8 @@ end
 
 
 class ProgramaRadioTv
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4169,6 +4503,8 @@ end
 
 class DadosBasicosProgramaRadioTv
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4195,6 +4531,8 @@ end
 
 class DetalhamentoProgramaRadioTv
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4216,6 +4554,8 @@ end
 
 
 class RelatorioPesquisa
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4243,6 +4583,8 @@ end
 
 class DadosBasicosRelatorioPesquisa
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4267,6 +4609,8 @@ end
 
 class DetalhamentoRelatorioPesquisa
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4285,6 +4629,8 @@ end
 
 
 class DadosBasicosMidiaSocialWebsiteBlog
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4311,6 +4657,8 @@ end
 
 class DetalhamentoMidiaSocialWebsiteBlog
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4326,6 +4674,8 @@ end
 
 
 class OutraProducao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4353,6 +4703,8 @@ end
 
 
 class ProducaoArtisticaCultural
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4413,6 +4765,8 @@ end
 
 class ApresentacaoObraArtistica
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4439,6 +4793,8 @@ end
 
 class DadosBasicosApresentacaoObraArtistica
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4463,6 +4819,8 @@ end
 
 
 class DetalhamentoApresentacaoObraArtistica
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4490,6 +4848,8 @@ end
 
 class ApresentacaoRadioTv
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4516,6 +4876,8 @@ end
 
 class DadosBasicosApresentacaoRadioTv
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4540,6 +4902,8 @@ end
 
 class DetalhamentoApresentacaoRadioTv
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4559,6 +4923,8 @@ end
 
 
 class ArranjoMusical
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4586,6 +4952,8 @@ end
 
 class DadosBasicosArranjoMusical
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4610,6 +4978,8 @@ end
 
 class DetalhamentoArranjoMusical
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4629,6 +4999,8 @@ end
 
 
 class ComposicaoMusical
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4656,6 +5028,8 @@ end
 
 class DadosBasicosComposicaoMusical
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4681,6 +5055,8 @@ end
 
 class DetalhamentoComposicaoMusical
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4699,6 +5075,8 @@ end
 
 
 class CursoCurtaDuracao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4726,6 +5104,8 @@ end
 
 class DadosBasicosCursoCurtaDuracao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4751,6 +5131,8 @@ end
 
 class DetalhamentoCursoCurtaDuracao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4770,6 +5152,8 @@ end
 
 
 class ObraArtesVisuais
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4797,6 +5181,8 @@ end
 
 class DadosBasicosObraArtesVisuais
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4822,6 +5208,8 @@ end
 
 class DetalhamentoObraArtesVisuais
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4842,6 +5230,8 @@ end
 
 
 class OutraProducaoArtisticaCultural
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4868,6 +5258,8 @@ end
 
 
 class DadosBasicosOutraProducaoArtisticaCultural
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4896,6 +5288,8 @@ end
 
 class DetalhamentoOutraProducaoArtisticaCultural
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4915,6 +5309,8 @@ end
 
 
 class Sonoplastia
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -4942,6 +5338,8 @@ end
 
 class DadosBasicosSonoplastia
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4966,6 +5364,8 @@ end
 
 class DetalhamentoSonoplastia
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -4982,6 +5382,8 @@ end
 
 
 class ArtesCenicas
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5009,6 +5411,8 @@ end
 
 class DadosBasicosArtesCenicas
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5033,6 +5437,8 @@ end
 
 
 class DetalhamentoArtesCenicas
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5065,6 +5471,8 @@ end
 
 class ArtesVisuais
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5091,6 +5499,8 @@ end
 
 class DadosBasicosArtesVisuais
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5116,6 +5526,8 @@ end
 
 class DetalhamentoArtesVisuais
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5136,6 +5548,8 @@ end
 
 
 class Musica
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5163,6 +5577,8 @@ end
 
 class DadosBasicosMusica
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5187,6 +5603,8 @@ end
 
 
 class DetalhamentoMusica
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5220,6 +5638,8 @@ end
 
 class OrientacoesConcluidas
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5251,6 +5671,8 @@ end
 
 class OrientacoesConcluidasParaMestrado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5272,6 +5694,8 @@ end
 
 
 class DadosBasicosOrientacoesConcluidasParaMestrado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5297,6 +5721,8 @@ end
 
 
 class DetalhamentoOrientacoesConcluidasParaMestrado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5327,6 +5753,8 @@ end
 
 class OrientacoesConcluidasParaDoutorado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5348,6 +5776,8 @@ end
 
 
 class DadosBasicosOrientacoesConcluidasParaDoutorado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5372,6 +5802,8 @@ end
 
 
 class DetalhamentoOrientacoesConcluidasParaDoutorado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5402,6 +5834,8 @@ end
 
 class OrientacoesConcluidasParaPosDoutorado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5423,6 +5857,8 @@ end
 
 
 class DadosBasicosOrientacoesConcluidasParaPosDoutorado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5447,6 +5883,8 @@ end
 
 
 class DetalhamentoOrientacoesConcluidasParaPosDoutorado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5477,6 +5915,8 @@ end
 
 class OutrasOrientacoesConcluidas
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5498,6 +5938,8 @@ end
 
 
 class DadosBasicosOutrasOrientacoesConcluidas
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5524,6 +5966,8 @@ end
 
 
 class DetalhamentoOutrasOrientacoesConcluidas
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5554,6 +5998,8 @@ end
 
 class DemaisTrabalhos
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5579,6 +6025,8 @@ end
 
 
 class DadosBasicosDemaisTrabalhos
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5606,6 +6054,8 @@ end
 
 class DetalhamentoDemaisTrabalhos
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5622,6 +6072,8 @@ end
 
 
 class DadosComplementares
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5649,6 +6101,8 @@ end
 
 
 class FormacaoComplementar
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5681,6 +6135,8 @@ end
 
 class FormacaoComplementarExtensaoUniversitaria
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5708,6 +6164,8 @@ end
 
 
 class Mba
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5746,6 +6204,8 @@ end
 
 class FormacaoComplementarCursoCurtaDuracao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5774,6 +6234,8 @@ end
 
 class Outros
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5801,6 +6263,8 @@ end
 
 
 class ParticipacaoBancaTrabalhosConclusao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5841,6 +6305,8 @@ end
 
 class ParticipacaoBancaMestrado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5867,6 +6333,8 @@ end
 
 class DadosBasicosParticipacaoBancaMestrado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5891,6 +6359,8 @@ end
 
 class DetalhamentoParticipacaoBancaMestrado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5914,6 +6384,8 @@ end
 
 class ParticipanteBanca
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5933,6 +6405,8 @@ end
 
 
 class ParticipacaoBancaDoutorado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -5960,6 +6434,8 @@ end
 
 class DadosBasicosParticipacaoBancaDoutorado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -5983,6 +6459,8 @@ end
 
 class DetalhamentoParticipacaoBancaDoutorado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6005,6 +6483,8 @@ end
 
 
 class ParticipacaoBancaExameQualificacao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6032,6 +6512,8 @@ end
 
 class DadosBasicosParticipacaoBancaExameQualificacao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6055,6 +6537,8 @@ end
 
 class DetalhamentoParticipacaoBancaExameQualificacao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6077,6 +6561,8 @@ end
 
 
 class ParticipacaoBancaAperfeicoamentoEspecializacao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6104,6 +6590,8 @@ end
 
 class DadosBasicosParticipacaoBancaAperfeicoamentoEspecializacao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6127,6 +6615,8 @@ end
 
 class DetalhamentoParticipacaoBancaAperfeicoamentoEspecializacao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6149,6 +6639,8 @@ end
 
 
 class ParticipacaoBancaGraduacao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6176,6 +6668,8 @@ end
 
 class DadosBasicosParticipacaoBancaGraduacao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6199,6 +6693,8 @@ end
 
 class DetalhamentoParticipacaoBancaGraduacao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6221,6 +6717,8 @@ end
 
 
 class OutrasParticipacoesBanca
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6248,6 +6746,8 @@ end
 
 class DadosBasicosOutrasParticipacoesBanca
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6273,6 +6773,8 @@ end
 
 class DetalhamentoOutrasParticipacoesBanca
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6295,6 +6797,8 @@ end
 
 
 class ParticipacaoBancaJulgadora
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6331,6 +6835,8 @@ end
 
 class BancaJulgadoraParaProfessorTitular
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6357,6 +6863,8 @@ end
 
 class DadosBasicosBancaJulgadoraParaProfessorTitular
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6380,6 +6888,8 @@ end
 
 class DetalhamentoBancaJulgadoraParaProfessorTitular
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6396,6 +6906,8 @@ end
 
 
 class BancaJulgadoraParaConcursoPublico
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6423,6 +6935,8 @@ end
 
 class DadosBasicosBancaJulgadoraParaConcursoPublico
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6446,6 +6960,8 @@ end
 
 class DetalhamentoBancaJulgadoraParaConcursoPublico
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6462,6 +6978,8 @@ end
 
 
 class BancaJulgadoraParaLivreDocencia
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6489,6 +7007,8 @@ end
 
 class DadosBasicosBancaJulgadoraParaLivreDocencia
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6512,6 +7032,8 @@ end
 
 class DetalhamentoBancaJulgadoraParaLivreDocencia
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6528,6 +7050,8 @@ end
 
 
 class BancaJulgadoraParaAvaliacaoCursos
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6555,6 +7079,8 @@ end
 
 class DadosBasicosBancaJulgadoraParaAvaliacaoCursos
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6578,6 +7104,8 @@ end
 
 class DetalhamentoBancaJulgadoraParaAvaliacaoCursos
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6594,6 +7122,8 @@ end
 
 
 class OutrasBancasJulgadoras
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6621,6 +7151,8 @@ end
 
 class DadosBasicosOutrasBancasJulgadoras
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6646,6 +7178,8 @@ end
 
 class DetalhamentoOutrasBancasJulgadoras
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6662,6 +7196,8 @@ end
 
 
 class ParticipacaoEventosCongressos
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6714,6 +7250,8 @@ end
 
 class ParticipanteEventosCongressos
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6733,6 +7271,8 @@ end
 
 
 class ParticipacaoCongresso
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6759,6 +7299,8 @@ end
 
 
 class DadosBasicosParticipacaoCongresso
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6788,6 +7330,8 @@ end
 
 class DetalhamentoParticipacaoCongresso
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6808,6 +7352,8 @@ end
 
 
 class ParticipacaoFeira
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6834,6 +7380,8 @@ end
 
 
 class DadosBasicosParticipacaoFeira
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6863,6 +7411,8 @@ end
 
 class DetalhamentoParticipacaoFeira
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6883,6 +7433,8 @@ end
 
 
 class ParticipacaoSeminario
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6909,6 +7461,8 @@ end
 
 
 class DadosBasicosParticipacaoSeminario
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6938,6 +7492,8 @@ end
 
 class DetalhamentoParticipacaoSeminario
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -6958,6 +7514,8 @@ end
 
 
 class ParticipacaoSimposio
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -6984,6 +7542,8 @@ end
 
 
 class DadosBasicosParticipacaoSimposio
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7013,6 +7573,8 @@ end
 
 class DetalhamentoParticipacaoSimposio
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7033,6 +7595,8 @@ end
 
 
 class ParticipacaoOficina
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7059,6 +7623,8 @@ end
 
 
 class DadosBasicosParticipacaoOficina
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7088,6 +7654,8 @@ end
 
 class DetalhamentoParticipacaoOficina
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7108,6 +7676,8 @@ end
 
 
 class ParticipacaoEncontro
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7134,6 +7704,8 @@ end
 
 
 class DadosBasicosParticipacaoEncontro
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7163,6 +7735,8 @@ end
 
 class DetalhamentoParticipacaoEncontro
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7183,6 +7757,8 @@ end
 
 
 class ParticipacaoExposicao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7209,6 +7785,8 @@ end
 
 
 class DadosBasicosParticipacaoExposicao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7238,6 +7816,8 @@ end
 
 class DetalhamentoParticipacaoExposicao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7258,6 +7838,8 @@ end
 
 
 class ParticipacaoOlimpiada
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7284,6 +7866,8 @@ end
 
 
 class DadosBasicosParticipacaoOlimpiada
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7313,6 +7897,8 @@ end
 
 class DetalhamentoParticipacaoOlimpiada
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7333,6 +7919,8 @@ end
 
 
 class OutrasParticipacoesEventosCongressos
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7359,6 +7947,8 @@ end
 
 
 class DadosBasicosOutrasParticipacoesEventosCongressos
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7388,6 +7978,8 @@ end
 
 class DetalhamentoOutrasParticipacoesEventosCongressos
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7408,6 +8000,8 @@ end
 
 
 class OrientacoesAndamento
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7452,6 +8046,8 @@ end
 
 class OrientacaoAndamentoMestrado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7473,6 +8069,8 @@ end
 
 
 class DadosBasicosOrientacaoAndamentoMestrado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7497,6 +8095,8 @@ end
 
 
 class DetalhamentoOrientacaoAndamentoMestrado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7526,6 +8126,8 @@ end
 
 class OrientacaoAndamentoDoutorado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7547,6 +8149,8 @@ end
 
 
 class DadosBasicosOrientacaoAndamentoDoutorado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7570,6 +8174,8 @@ end
 
 
 class DetalhamentoOrientacaoAndamentoDoutorado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7599,6 +8205,8 @@ end
 
 class OrientacaoAndamentoPosDoutorado
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7620,6 +8228,8 @@ end
 
 
 class DadosBasicosOrientacaoAndamentoPosDoutorado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7643,6 +8253,8 @@ end
 
 
 class DetalhamentoOrientacaoAndamentoPosDoutorado
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7672,6 +8284,8 @@ end
 
 class OrientacaoAndamentoAperfeicoamentoEspecializacao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7693,6 +8307,8 @@ end
 
 
 class DadosBasicosOrientacaoAndamentoAperfeicoamentoEspecializacao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7716,6 +8332,8 @@ end
 
 
 class DetalhamentoOrientacaoAndamentoAperfeicoamentoEspecializacao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7744,6 +8362,8 @@ end
 
 class OrientacaoAndamentoGraduacao
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7765,6 +8385,8 @@ end
 
 
 class DadosBasicosOrientacaoAndamentoGraduacao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7788,6 +8410,8 @@ end
 
 
 class DetalhamentoOrientacaoAndamentoGraduacao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7816,6 +8440,8 @@ end
 
 class OrientacaoAndamentoIniciacaoCientifica
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7837,6 +8463,8 @@ end
 
 
 class DadosBasicosOrientacaoAndamentoIniciacaoCientifica
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7860,6 +8488,8 @@ end
 
 
 class DetalhamentoOrientacaoAndamentoIniciacaoCientifica
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7888,6 +8518,8 @@ end
 
 class OutrasOrientacoesAndamento
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7909,6 +8541,8 @@ end
 
 
 class DadosBasicosOutrasOrientacoesAndamento
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7932,6 +8566,8 @@ end
 
 
 class DetalhamentoOutrasOrientacoesAndamento
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -7960,6 +8596,8 @@ end
 
 class InformacoesAdicionaisInstituicoes
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -7978,6 +8616,8 @@ end
 
 
 class InformacaoAdicionalInstituicao
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -8001,6 +8641,8 @@ end
 
 class InformacoesAdicionaisCursos
 
+attr_reader :atributos
+
 	def initialize(arg)
 
 		return if arg == nil
@@ -8019,6 +8661,8 @@ end
 
 
 class InformacaoAdicionalCurso
+
+attr_reader :atributos
 
 	def initialize(arg)
 
@@ -8049,6 +8693,13 @@ if __FILE__ == $0
 #	xml_filename = ARGV[0]
 
 	xml_file = REXML::Document.new File.new(xml_filename)
+
+	TeX_filename = 'cv_lattes.tex'
+#	TeX_filename = ARGV[1]
+
 	obj_loader = CurriculoVitae.new(xml_file.elements['CURRICULO-VITAE'])
-	obj_loader.parse
+	obj_loader.XML2TeX(TeX_filename)
+
+	TeX2PDF(TeX_filename)
+
 end
