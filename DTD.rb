@@ -227,6 +227,82 @@ def className(name)
 	name.join
 end
 
+def download(url, file)
+	# taken from:
+	# 28/12/2018
+	# https://stackoverflow.com/questions/2515931/how-can-i-download-a-file-from-a-url-and-save-it-in-rails
+    require 'open-uri'
+    download = open(url.to_s)
+    IO.copy_stream(download, './' + file.to_s)
+end
+
+def remove_comment_DTD(dtd_filename)
+	# necessário pois caso contrário alguns comentários seriam captados durante o parsing do DTD
+	flag = true
+
+	# modificado de:
+	# 28/12/2018
+	# https://stackoverflow.com/questions/37515509/how-to-delete-specific-lines-in-text-file
+
+	File.open("comment_dtd", "w") do |out_file|
+			File.foreach(dtd_filename).with_index do |line, line_number|
+			if line == "<!-- ###############################################################################################################    -->\n"
+				flag = !flag
+			end
+
+			if flag == true
+				out_file.puts line
+			end
+		end
+	end
+
+	no_comment = File.open(dtd_filename, "w")
+	no_comment.write(File.read("comment_dtd"))
+	no_comment.close
+
+	File.delete("comment_dtd")
+end
+
+def is_DTD_updated?
+	download("http://lmpl.cnpq.br/lmpl/Gramaticas/Curriculo/DTD/Fontes/LMPLCurriculo.DTD", "documento_dtd")
+	remove_comment_DTD("documento_dtd")
+	dtd_novo = File.open("documento_dtd")
+
+	dtd_atual = File.open("documento.dtd")
+	
+	ret = FileUtils.compare_file(dtd_atual, dtd_novo)
+
+	dtd_atual.close
+	dtd_novo.close
+	File.delete("documento_dtd")
+
+	return ret
+end
+
+def update_DTD
+	download("http://lmpl.cnpq.br/lmpl/Gramaticas/Curriculo/DTD/Fontes/LMPLCurriculo.DTD", "documento.dtd")
+end
+
+def update_Lattes_XML(cnpd_ID)
+	# não tá funcionando pq a página pede pra digitar um código de segurança
+	download("http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq=#{cnpd_ID}", "cv_lattes.xml")
+end
+
+def is_Lattes_XML_updated?(cnpd_ID)
+	# não tá funcionando pq a página pede pra digitar um código de segurança
+	download("http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq=#{cnpd_ID}", "cv_lattes_xml")
+	cv_novo  = File.new("cv_lattes_xml")
+	cv_atual = File.new("cv_lattes.xml")
+
+	ret = FileUtils.compare_file(cv_atual, cv_novo)
+
+	cv_atual.close
+	cv_novo.close
+	File.delete("cv_lattes_xml")
+
+	return ret
+end
+
 # if __FILE__ == $0
 # 	# Listagem 5.8: Expressões Regulares Utilizadas no Parser de DTD
 # 	# [1] = Nome do Elemento [2] = Elementos do Elemento

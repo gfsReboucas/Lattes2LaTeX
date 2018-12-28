@@ -6,6 +6,7 @@ def TeX2PDF(filename, opt)
 
 	case opt
 	when nil, "arara"
+		# mais informações sobre arara em: https://github.com/cereda/arara
 		command = "arara #{filename}"
 		exec(command.to_s)
 	when "pdflatex"
@@ -17,6 +18,11 @@ def TeX2PDF(filename, opt)
 end
 
 # todo: check if CurriculoVitae.rb already exists
+# todo: make something to handle empty atributos
+# todo: download .xml file using only CNPq ID
+# http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq= <CNPq ID>
+# http://lattes.cnpq.br/ <CNPq ID>
+# todo: download profile picture automatically
 
 if __FILE__ == $0
 	# Listagem 5.8: Expressões Regulares Utilizadas no Parser de DTD
