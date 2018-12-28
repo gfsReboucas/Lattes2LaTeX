@@ -8,25 +8,25 @@ class DTD
 		@map = Hash.new
 
  		@map['CURRICULO-VITAE'] = <<EOF
-		def XML2TeX(cv_filename)
-			tmp = @atributos['DATA-ATUALIZACAO']
+	def XML2TeX(cv_filename)
+		tmp = @atributos['DATA-ATUALIZACAO']
 
-			# insere separadores e converte data para o formato padrão do pacote datetime2
-			data = tmp[4..7] + "-" + tmp[2..3] + "-" + tmp[0..1]
+		# insere separadores e converte data para o formato padrão do pacote datetime2
+		data = tmp[4..7] + "-" + tmp[2..3] + "-" + tmp[0..1]
 
-			tmp = @atributos['HORA-ATUALIZACAO']
-			hora = tmp[0..1] + ":" + tmp[2..3] + ":" + tmp[4..5]
+		tmp = @atributos['HORA-ATUALIZACAO']
+		hora = tmp[0..1] + ":" + tmp[2..3] + ":" + tmp[4..5]
 
-			file_TeX = IO.read("header.tex")
-			file_TeX.gsub! 'NOME-COMPLETO'   , @elementos['DADOS-GERAIS'].atributos['NOME-COMPLETO']
-			file_TeX.gsub! 'DATA-ATUALIZACAO', data
-			file_TeX.gsub! 'HORA-ATUALIZACAO', hora
-			file_TeX.gsub! 'cv_filename', cv_filename
-			
-			cv_file = File.new(cv_filename, "w")
-			cv_file.write(file_TeX)
-			cv_file.close
-		end
+		file_TeX = IO.read("header.tex")
+		file_TeX.gsub! 'NOME-COMPLETO'   , @elementos['DADOS-GERAIS'].atributos['NOME-COMPLETO']
+		file_TeX.gsub! 'DATA-ATUALIZACAO', data
+		file_TeX.gsub! 'HORA-ATUALIZACAO', hora
+		file_TeX.gsub! 'cv_filename', cv_filename
+
+		cv_file = File.new(cv_filename, "w")
+		cv_file.write(file_TeX)
+		cv_file.close
+	end
 EOF
 
 		# Listagem 5.7: Mapeamento de Métodos para o Currículo Lattes
@@ -48,16 +48,16 @@ EOF
 		# Listagem 6.2: Métodos de Geração do Código LATEX: Informações Pessoais e Resumos
 		# ...
 		@map['DADOS-GERAIS'] = <<EOF
-		def toTEX
-			puts '\\section*{Curriculum Vitae}'
-			puts @atributos['NOME-COMPLETO']
-			puts @atributos['CIDADE-NASCIMENTO'] + ', '
-			puts @atributos['PAIS-DE-NASCIMENTO']
-			puts
-			@elementos['RESUMO-CV'].toTEX
-			@elementos['IDIOMAS'].toTEX
-			@elementos['FORMACAO-ACADEMICA-TITULACAO'].toTEX
-		end
+	def toTEX
+		puts '\\section*{Curriculum Vitae}'
+		puts @atributos['NOME-COMPLETO']
+		puts @atributos['CIDADE-NASCIMENTO'] + ', '
+		puts @atributos['PAIS-DE-NASCIMENTO']
+		puts
+		@elementos['RESUMO-CV'].toTEX
+		@elementos['IDIOMAS'].toTEX
+		@elementos['FORMACAO-ACADEMICA-TITULACAO'].toTEX
+	end
 EOF
 		# Listagem 6.7: Métodos de Geração do Código LATEX: Alternativas de Formatação
 # 		@map['DADOS-GERAIS'] = <<EOF
@@ -75,27 +75,27 @@ EOF
 		# ...
 		# Listagem 6.2 - FINAL
 		@map['PRODUCAO-BIBLIOGRAFICA'] = <<EOF
-		def toTEX
-			puts '\\subsection*{Producao Bibliografica}'
-			@elementos['TRABALHOS-EM-EVENTOS'].toTEX
-			@elementos['ARTIGOS-PUBLICADOS'].toTEX
-			@elementos['LIVROS-E-CAPITULOS'].toTEX
-			@elementos['TEXTOS-EM-JORNAIS-OU-REVISTAS'].toTEX
-			@elementos['ARTIGOS-ACEITOS-PARA-PUBLICACAO'].toTEX
-		end
+	def toTEX
+		puts '\\subsection*{Producao Bibliografica}'
+		@elementos['TRABALHOS-EM-EVENTOS'].toTEX
+		@elementos['ARTIGOS-PUBLICADOS'].toTEX
+		@elementos['LIVROS-E-CAPITULOS'].toTEX
+		@elementos['TEXTOS-EM-JORNAIS-OU-REVISTAS'].toTEX
+		@elementos['ARTIGOS-ACEITOS-PARA-PUBLICACAO'].toTEX
+	end
 EOF
 		@map['DADOS-COMPLEMENTARES'] = <<EOF
-		def toTEX
-		end
+	def toTEX
+	end
 EOF
 		# Listagem 5.7 - FINAL
 		# Listagem 6.2: Métodos de Geração do Código LATEX: Informações Pessoais e Resumos
 		# ...
 		@map['RESUMO-CV'] = <<EOF
-		def toTEX
-			puts '\\subsection*{Resumo}'
-			puts @atributos['TEXTO-RESUMO-CV-RH']
-		end
+	def toTEX
+		puts '\\subsection*{Resumo}'
+		puts @atributos['TEXTO-RESUMO-CV-RH']
+	end
 EOF
 		# ...
 		# Listagem 6.2 - FINAL

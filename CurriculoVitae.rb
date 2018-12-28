@@ -26,23 +26,25 @@ attr_reader :atributos
 		@elementos['DADOS-COMPLEMENTARES'] = DadosComplementares.new(arg.elements['DADOS-COMPLEMENTARES'])
 	end
 
-		def XML2TeX(cv_filename)
-			tmp = @atributos['DATA-ATUALIZACAO']
-			data = tmp[4..7] + "-" + tmp[2..3] + "-" + tmp[0..1]
+	def XML2TeX(cv_filename)
+		tmp = @atributos['DATA-ATUALIZACAO']
 
-			tmp = @atributos['HORA-ATUALIZACAO']
-			hora = tmp[0..1] + ":" + tmp[2..3] + ":" + tmp[4..5]
+		# insere separadores e converte data para o formato padrão do pacote datetime2
+		data = tmp[4..7] + "-" + tmp[2..3] + "-" + tmp[0..1]
 
-			file_TeX = IO.read("header.tex")
-			file_TeX.gsub! 'NOME-COMPLETO'   , @elementos['DADOS-GERAIS'].atributos['NOME-COMPLETO']
-			file_TeX.gsub! 'DATA-ATUALIZACAO', data
-			file_TeX.gsub! 'HORA-ATUALIZACAO', hora
-			file_TeX.gsub! 'cv_filename', cv_filename
-			
-			cv_file = File.new(cv_filename, "w")
-			cv_file.write(file_TeX)
-			cv_file.close
-		end
+		tmp = @atributos['HORA-ATUALIZACAO']
+		hora = tmp[0..1] + ":" + tmp[2..3] + ":" + tmp[4..5]
+
+		file_TeX = IO.read("header.tex")
+		file_TeX.gsub! 'NOME-COMPLETO'   , @elementos['DADOS-GERAIS'].atributos['NOME-COMPLETO']
+		file_TeX.gsub! 'DATA-ATUALIZACAO', data
+		file_TeX.gsub! 'HORA-ATUALIZACAO', hora
+		file_TeX.gsub! 'cv_filename', cv_filename
+
+		cv_file = File.new(cv_filename, "w")
+		cv_file.write(file_TeX)
+		cv_file.close
+	end
 
 end
 
@@ -94,16 +96,16 @@ attr_reader :atributos
 		@elementos['PREMIOS-TITULOS'] = PremiosTitulos.new(arg.elements['PREMIOS-TITULOS'])
 	end
 
-		def toTEX
-			puts '\section*{Curriculum Vitae}'
-			puts @atributos['NOME-COMPLETO']
-			puts @atributos['CIDADE-NASCIMENTO'] + ', '
-			puts @atributos['PAIS-DE-NASCIMENTO']
-			puts
-			@elementos['RESUMO-CV'].toTEX
-			@elementos['IDIOMAS'].toTEX
-			@elementos['FORMACAO-ACADEMICA-TITULACAO'].toTEX
-		end
+	def toTEX
+		puts '\section*{Curriculum Vitae}'
+		puts @atributos['NOME-COMPLETO']
+		puts @atributos['CIDADE-NASCIMENTO'] + ', '
+		puts @atributos['PAIS-DE-NASCIMENTO']
+		puts
+		@elementos['RESUMO-CV'].toTEX
+		@elementos['IDIOMAS'].toTEX
+		@elementos['FORMACAO-ACADEMICA-TITULACAO'].toTEX
+	end
 
 end
 
@@ -123,10 +125,10 @@ attr_reader :atributos
 		@elementos = Hash.new
 	end
 
-		def toTEX
-			puts '\subsection*{Resumo}'
-			puts @atributos['TEXTO-RESUMO-CV-RH']
-		end
+	def toTEX
+		puts '\subsection*{Resumo}'
+		puts @atributos['TEXTO-RESUMO-CV-RH']
+	end
 
 end
 
@@ -1862,14 +1864,14 @@ attr_reader :atributos
 		@elementos['ARTIGOS-ACEITOS-PARA-PUBLICACAO'] = ArtigosAceitosParaPublicacao.new(arg.elements['ARTIGOS-ACEITOS-PARA-PUBLICACAO'])
 	end
 
-		def toTEX
-			puts '\subsection*{Producao Bibliografica}'
-			@elementos['TRABALHOS-EM-EVENTOS'].toTEX
-			@elementos['ARTIGOS-PUBLICADOS'].toTEX
-			@elementos['LIVROS-E-CAPITULOS'].toTEX
-			@elementos['TEXTOS-EM-JORNAIS-OU-REVISTAS'].toTEX
-			@elementos['ARTIGOS-ACEITOS-PARA-PUBLICACAO'].toTEX
-		end
+	def toTEX
+		puts '\subsection*{Producao Bibliografica}'
+		@elementos['TRABALHOS-EM-EVENTOS'].toTEX
+		@elementos['ARTIGOS-PUBLICADOS'].toTEX
+		@elementos['LIVROS-E-CAPITULOS'].toTEX
+		@elementos['TEXTOS-EM-JORNAIS-OU-REVISTAS'].toTEX
+		@elementos['ARTIGOS-ACEITOS-PARA-PUBLICACAO'].toTEX
+	end
 
 end
 
@@ -6094,8 +6096,8 @@ attr_reader :atributos
 		@elementos['INFORMACOES-ADICIONAIS-CURSOS'] = InformacoesAdicionaisCursos.new(arg.elements['INFORMACOES-ADICIONAIS-CURSOS'])
 	end
 
-		def toTEX
-		end
+	def toTEX
+	end
 
 end
 
