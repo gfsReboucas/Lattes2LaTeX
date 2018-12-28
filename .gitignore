@@ -1,0 +1,12 @@
+*.log
+
+~$_lattes.docx
+changedFiles.rb
+cv_lattes_F01.pdf
+cv_lattes_F02.pdf
+cv_lattes_F03.pdf
+cv_lattes.docx
+cv_lattes.rtf
+doc.dtd
+download.rb
+header.pdf

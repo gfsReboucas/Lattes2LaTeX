@@ -1,0 +1,157 @@
+% !TeX spellcheck = pt_BR
+% !TeX root = cv_lattes.tex
+%% !TeX root = header
+% !TeX encoding = utf8
+% !TeX program = LuaLaTeX
+% !BIB program = biber
+
+% arara: lualatex
+% arara: clean: {
+% arara: --> extensions: [aux, bbl, bcf, blg, log, toc, soc, out, run.xml, synctex, synctex(busy)]
+% arara: --> 	}
+
+\RequirePackage[l2tabu,orthodox]{nag} % Old habits die hard
+
+\documentclass[10pt,
+			   a4paper,
+			   twoside,
+			   extrafontsizes,
+			   openright,
+%			   showtrims,
+			   oldfontcommands]{memoir}
+
+\usepackage{polyglossia} % multilingual typesetting and appropriate hyphenation
+%\setmainlanguage[variant=brazil]{portuges}
+\setmainlanguage{portuges}
+\setotherlanguage[variant=us]{english}
+
+\usepackage[useregional=numeric,datesep=/]{datetime2}
+\DTMsetdatestyle{ddmmyyyy}
+
+\DTMsavedate{dataAtualiza}{2018-12-15}
+\DTMsavetime{horaAtualiza}{12:36:51}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[section]{placeins} % to ensure that figures will appear in the section they are mentioned
+\usepackage{amsmath} % to use align environment
+\usepackage{siunitx} % to insert units properly
+\usepackage{graphicx} % to handle figures
+\usepackage{booktabs} % To thicken table lines
+\usepackage{multirow} % command in table environment
+\usepackage{todonotes} % to insert marks
+\usepackage{courier} % to use courier font
+\usepackage[hyphens]{url} % Allow hyphens in URL's
+\usepackage[unicode=false,psdextra]{hyperref} % References package
+\usepackage{graphicx} % Including graphics and using colours
+\usepackage{enumitem} % to customize the appearance of lists
+%\usepackage{indentfirst}
+\usepackage{caption}
+\usepackage{footnote}
+\usepackage{anyfontsize}
+
+\makeatletter
+\newcommand{\monthyeardate}{%
+	\DTMportugesmonthname{\@dtm@month}/\@dtm@year
+}
+\makeatother
+
+\usepackage{xcolor} % Defined more color names
+\definecolor{cinza}{RGB}{160,160,160}
+
+% The following adds the implicit \FloatBarrier to \subsection:
+% taken from: (27/03/2018)
+% https://tex.stackexchange.com/questions/118662/use-placeins-for-subsections
+\makeatletter
+\AtBeginDocument{%
+	\expandafter\renewcommand\expandafter\subsection\expandafter{%
+		\expandafter\@fb@secFB\subsection
+	}%
+}
+\makeatother
+
+\title{Curriculum Vitae}
+\author{Geraldo Francisco de Souza Rebouças} % #{filename}
+\date{\monthyeardate}
+
+% Hypersetup
+\hypersetup{
+	pdfauthor={\theauthor},
+	pdftitle={\thetitle{} de \theauthor},
+	pdfsubject={},
+	pdfdisplaydoctitle,
+	bookmarksnumbered=true,
+	bookmarksopen,
+	breaklinks,
+	linktoc=all,
+	plainpages=false,
+	unicode=true,
+	colorlinks=false,
+	hidelinks, % Do not show boxes or colored links.
+}
+
+% Text fonts (http://www.macfreek.nl/memory/Fonts_in_LaTeX)
+% Install fonts from /usr/local/texlive/<version>/texmf-dist/fonts/opentype/public
+\usepackage{fontspec}
+\setmainfont{Arial}
+
+\setlrmarginsandblock{15mm}{15mm}{*}
+\setulmarginsandblock{25mm}{25mm}{*}
+\checkandfixthelayout 
+
+%\usepackage[showframe,pass]{geometry}
+%\geometry{showframe,
+%		  a4paper,
+%	  	  left=15mm,
+%  	 	  right=15mm,
+%   	  	  bottom=20mm,
+%     	  top=20mm,
+%       	  marginparsep=0mm,
+%          marginparwidth=0mm}
+
+\nouppercaseheads
+\makepagestyle{Lattes}
+\makeevenhead{Lattes}{}{}{}
+\makeoddhead{Lattes}{}{}{}
+\makeevenfoot{Lattes}{Página gerada pelo sistema Currículo Lattes em \DTMusedate{dataAtualiza} as \DTMusetime{horaAtualiza}}{}{Página \thepage{} de \thelastpage}
+\makeoddfoot{Lattes}{Página gerada pelo sistema Currículo Lattes em \DTMusedate{dataAtualiza} as \DTMusetime{horaAtualiza}}{}{Página \thepage{} de \thelastpage}
+\makepsmarks{Lattes}{}
+
+\pagestyle{Lattes}
+
+%capa, adaptado de:
+% http://zoonek.free.fr/LaTeX/LaTeX_samples_title/0.html
+\makeatletter
+\def\maketitle{%
+	\null
+	\thispagestyle{empty}%
+	\vfill
+	\begin{center}
+		\vspace{46mm} % aproximado
+		{\fontsize{13}{16}\selectfont \textcolor{cinza}{\textbf{\theauthor}}\par}%
+		{\thetitle\par}%
+		\vspace{100mm} % aproximado
+		{\thedate\par}%
+	\end{center}%
+	\null
+	\cleardoublepage
+}
+\makeatother
+
+\DeclareRobustCommand{\linha}{
+	\noindent\hfil\rule[-1mm]{\textwidth}{0.2mm}\hfil
+}
+
+\begin{document}
+	\maketitle
+
+	\mainmatter
+	{\fontsize{13}{16}\selectfont \textcolor{cinza}{\textbf{\theauthor}}}\par
+	\thetitle\par
+	\linha
+	\section*{Nome Civil}
+	\section*{Dados Pessoais}
+	\linha
+	\section*{Formação acadêmica/titulação}
+	
+\end{document}
