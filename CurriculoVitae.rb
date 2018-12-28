@@ -2099,13 +2099,13 @@ attr_reader :atributos
 		@elementos = Hash.new
 	end
 
-		def validade
-			if @atributos['ANO-DO-ARTIGO'] > Date.new.year
-				puts 'Ano Invalido! Artigo: '
-				puts @atributos['TITULO-DO-ARTIGO']
-				puts ' (' + @atributos['ANO-DO-ARTIGO'] + ')'
-			end
+	def validade
+		if @atributos['ANO-DO-ARTIGO'] > Date.new.year
+			puts 'Ano Invalido! Artigo: '
+			puts @atributos['TITULO-DO-ARTIGO']
+			puts ' (' + @atributos['ANO-DO-ARTIGO'] + ')'
 		end
+	end
 
 end
 

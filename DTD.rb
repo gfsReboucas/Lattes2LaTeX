@@ -102,13 +102,13 @@ EOF
 		# Listagem 6.9: Validando o Currículo Lattes
 		# OBS.: válido apenas para os elementos: ARTIGO-PUBLICADO e ARTIGO-ACEITO-PARA-PUBLICACAO
 		@map['DADOS-BASICOS-DO-ARTIGO'] = <<EOF
-		def validade
-			if @atributos['ANO-DO-ARTIGO'] > Date.new.year
-				puts 'Ano Invalido! Artigo: '
-				puts @atributos['TITULO-DO-ARTIGO']
-				puts ' (' + @atributos['ANO-DO-ARTIGO'] + ')'
-			end
+	def validade
+		if @atributos['ANO-DO-ARTIGO'] > Date.new.year
+			puts 'Ano Invalido! Artigo: '
+			puts @atributos['TITULO-DO-ARTIGO']
+			puts ' (' + @atributos['ANO-DO-ARTIGO'] + ')'
 		end
+	end
 EOF
 		# Listagem 6.9 - FINAL
 	end
